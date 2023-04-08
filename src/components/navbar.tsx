@@ -5,14 +5,25 @@ import { HiBars3 } from 'react-icons/hi2';
 import Link from 'next/link';
 import { signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Logo from '@/assets/images/logo.jpeg';
+import Image from 'next/image';
 
 type Props = {
   session: any;
   status: any;
 };
 const navigation = [
-  { name: 'Hotels List', href: '/hotel/list' },
-  { name: 'Rooms List', href: '/room/list' },
+  { name: 'Hotels List', href: '/hotel/list', auth: 'authenticated' },
+  {
+    name: 'Rooms List',
+    href: `/room/list?pageSize=10&pageNumber=1`,
+    isPublic: true,
+  },
+  {
+    name: 'Reservation',
+    href: '/reservation',
+    auth: 'authenticated',
+  },
 ];
 function Navbar({ session, status }: Props) {
   const { push } = useRouter();
@@ -28,13 +39,12 @@ function Navbar({ session, status }: Props) {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5">
+          <Link
+            href="/"
+            className="-m-1.5 p-1.5 w-[calc(4rem)] h-[calc(4rem)]"
+          >
             <span className="sr-only">Your Company</span>
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt=""
-            />
+            <Image className="h-full w-full" src={Logo} alt="" />
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -47,15 +57,34 @@ function Navbar({ session, status }: Props) {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <button
-              onClick={async () => await handleNavigate(item.href)}
-              key={item.name}
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              {item.name}
-            </button>
-          ))}
+          {navigation.map((item) => {
+            if (status === 'authenticated') {
+              return (
+                <button
+                  onClick={async () =>
+                    await handleNavigate(item.href)
+                  }
+                  key={item.name}
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  {item.name}
+                </button>
+              );
+            }
+            if (item.isPublic) {
+              return (
+                <button
+                  onClick={async () =>
+                    await handleNavigate(item.href)
+                  }
+                  key={item.name}
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  {item.name}
+                </button>
+              );
+            }
+          })}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {status === 'authenticated' ? (

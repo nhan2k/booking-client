@@ -1,9 +1,30 @@
 import { axiosInterceptor } from '@/config/axios';
 
-export const getRooms = async (query: any[]) => {
+export const getRooms = async (query: {
+  endDate?: string;
+  province?: string;
+  startDate?: string;
+  traveller?: number;
+  pageSize?: number;
+  pageNumber?: number;
+}) => {
   try {
-    const params = new URLSearchParams([query]);
+    if (Object.keys(query).length > 0) {
+      const params = new URLSearchParams([
+        ['endDate', query?.endDate ?? ''],
+        ['province', query?.province ?? ''],
+        ['startDate', query?.startDate ?? ''],
+        ['traveller', query?.traveller?.toString() ?? ''],
+        ['pageSize', query?.pageSize?.toString() ?? '1'],
+        ['pageNumber', query?.pageNumber?.toString() ?? '10'],
+      ]);
 
+      const response = await axiosInterceptor.get('/rooms', {
+        params,
+      });
+
+      return response.data;
+    }
     const response = await axiosInterceptor.get('/rooms');
 
     return response.data;

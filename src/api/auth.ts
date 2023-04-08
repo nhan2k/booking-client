@@ -6,7 +6,9 @@ export const getProfile = async () => {
 
     return response.data;
   } catch (error) {
-    return error as unknown;
+    throw new Error(
+      `Get profile fail ${error?.response?.data?.message}`
+    );
   }
 };
 
@@ -19,6 +21,8 @@ export const registerAPI = async (data: any) => {
 
     return response.data;
   } catch (error) {
-    return error as unknown;
+    throw new Error(
+      `Register fail ${error?.response?.data?.message}`
+    );
   }
 };

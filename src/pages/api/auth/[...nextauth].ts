@@ -71,9 +71,9 @@ export const authOptions: AuthOptions = {
       };
       return session;
     },
-    redirect({ url, baseUrl }) {
-      return '/';
-    },
+    // redirect({ url, baseUrl }) {
+    //   return '/';
+    // },
   },
   //   pages: {
   //     signIn: '/login',

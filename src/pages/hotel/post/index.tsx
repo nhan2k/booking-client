@@ -2,9 +2,8 @@ import Layout from '@/components/layout';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { signIn } from 'next-auth/react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { optionProvince } from '@/constants/option-province';
-import { axiosInterceptor } from '@/config/axios';
 import { useRouter } from 'next/router';
 import {
   QueryClient,
@@ -18,6 +17,7 @@ type Inputs = {
   hotel_name: string;
   location: string;
   province: string;
+  file: FileList;
 };
 type Props = {};
 // Create a client
@@ -53,12 +53,9 @@ function Page({}: Props) {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
-    console.log(
-      '🚀 ~ file: index.tsx:59 ~ constonSubmit:SubmitHandler<Inputs>= ~ data:',
-      data
-    );
     mutation.mutate(data);
   };
 
@@ -144,14 +141,33 @@ function Page({}: Props) {
                       Write a few sentences about location.
                     </p>
                   </div>
+
+                  <div className="col-span-full">
+                    <input
+                      type="file"
+                      {...register('file', {
+                        validate: {
+                          accept: (value) =>
+                            [
+                              'image/png',
+                              'image/jpeg',
+                              'image/jpg',
+                            ].includes(value[0].type),
+                          maxSize: (value) =>
+                            value[0].size <= 3000000,
+                        },
+                      })}
+                    />
+                    {errors.file && <p>{errors.file.message}</p>}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-x-6">
+            <div className="mt-6 flex items-center justify-end gap-x-6 w-full">
               <button
                 type="submit"
-                className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 py-2 px-3 w-full text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Save
               </button>

@@ -14,7 +14,7 @@ type Inputs = {
   prize: number;
   facilities: string;
   wifi: boolean;
-  ac: boolean;
+  AC: boolean;
   heater: boolean;
   otherFacilities: string;
 };
@@ -136,7 +136,7 @@ function Page({}: Props) {
                         type="number"
                         id="capacity"
                         name="capacity"
-                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                        className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                         defaultValue={''}
                       />
                       {errors.capacity && (
@@ -159,7 +159,7 @@ function Page({}: Props) {
                           type="number"
                           id="prize"
                           name="prize"
-                          className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                          className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                           defaultValue={''}
                         />
                         {errors.prize && (
@@ -182,7 +182,7 @@ function Page({}: Props) {
                           {...register('facilities')}
                           id="facilities"
                           name="facilities"
-                          className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                          className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                           defaultValue={''}
                         />
                       </div>
@@ -217,13 +217,13 @@ function Page({}: Props) {
                         </div>
                         <div className="flex items-center mb-4">
                           <Controller
-                            name="ac"
+                            name="AC"
                             control={control}
                             defaultValue={false}
                             render={({ field }) => (
                               <input
                                 {...field}
-                                id="ac"
+                                id="AC"
                                 type="checkbox"
                                 value=""
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -272,7 +272,7 @@ function Page({}: Props) {
                               {...register('otherFacilities')}
                               id="otherFacilities"
                               name="otherFacilities"
-                              className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                              className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                               defaultValue={''}
                             />
                           </div>

@@ -7,6 +7,7 @@ import Datepicker from 'react-tailwindcss-datepicker';
 import { DateRangeType } from 'react-tailwindcss-datepicker/dist/types';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { optionProvince } from '@/constants/option-province';
+import { useRouter } from 'next/router';
 
 type Inputs = {
   province: string;
@@ -16,6 +17,7 @@ type Inputs = {
 const inter = Inter({ subsets: ['latin'] });
 
 function Page() {
+  const router = useRouter();
   const [value, setValue] = React.useState<DateRangeType>({
     startDate: new Date(),
     endDate: new Date(),
@@ -28,11 +30,26 @@ function Page() {
     control,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const startDate =
+      (data.dateRange?.startDate &&
+        data.dateRange?.startDate.toString()) ||
+      '';
+    const endDate =
+      (data.dateRange?.endDate &&
+        data.dateRange?.endDate.toString()) ||
+      '';
+    const traveller = data.traveller.toString() || '';
 
-  const handleValueChange = (newValue: any) => {
-    console.log('newValue:', newValue);
-    setValue(newValue);
+    await router.push({
+      pathname: `/room/list`,
+      query: {
+        province: data.province,
+        startDate: startDate,
+        endDate: endDate,
+        traveller: traveller,
+      },
+    });
   };
 
   return (
@@ -114,6 +131,7 @@ function Page() {
                             }) => (
                               <Select
                                 options={optionProvince}
+                                placeholder="Where ?"
                                 onChange={(val) =>
                                   val && onChange(val.value)
                                 }
@@ -121,6 +139,11 @@ function Page() {
                             )}
                             rules={{ required: true }}
                           />
+                          {errors.province && (
+                            <span className="text-red-600">
+                              This field is required
+                            </span>
+                          )}
                         </div>
                       </div>
 
@@ -148,6 +171,11 @@ function Page() {
                             )}
                             rules={{ required: true }}
                           />
+                          {errors.dateRange && (
+                            <span className="text-red-600">
+                              This field is required
+                            </span>
+                          )}
                         </div>
                       </div>
 
@@ -167,6 +195,11 @@ function Page() {
                             autoComplete="guest_list"
                             className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
+                          {errors.traveller && (
+                            <span className="text-red-600">
+                              This field is required
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="sm:col-span-1">

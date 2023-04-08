@@ -10,9 +10,9 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Hotel from '@/assets/images/hotel.jpg';
 
-// Create a client
-const queryClient = new QueryClient();
 type Inputs = {
   email: string;
   password: string;
@@ -25,22 +25,15 @@ type Props = {};
 
 function Page({}: Props) {
   const { push } = useRouter();
-  // Queries
-  const query = useQuery({
-    queryKey: ['profile'],
-    queryFn: getProfile,
-  });
 
   const mutation = useMutation({
     mutationFn: registerAPI,
-    onSuccess(data, variables, context) {
+    async onSuccess(data, variables, context) {
       toast.success('Register success');
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      push('/');
+      await push('/');
     },
     onError(error, variables, context) {
       toast.error(`Error: ${error}`);
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 
@@ -57,11 +50,7 @@ function Page({}: Props) {
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <p className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          <img
-            className="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-            alt="logo"
-          />
+          <Image className="w-8 h-8 mr-2" src={Hotel} alt="logo" />
           Register
         </p>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

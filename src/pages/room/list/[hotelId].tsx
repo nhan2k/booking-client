@@ -4,6 +4,8 @@ import Layout from '@/components/layout';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
+import Hotel from '@/assets/images/hotel.jpg';
+import Image from 'next/image';
 
 type Props = {};
 
@@ -55,12 +57,9 @@ function Page({}: Props) {
                     }
                   >
                     <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                      <img
-                        src={
-                          room?.imageSrc ||
-                          'https://cf.bstatic.com/xdata/images/hotel/square200/51556729.webp?k=3e557bde5439ad3c33810be6e154db0f2714cfaa1a22537a8e4523fa2e72243b&o=&s=1'
-                        }
-                        alt={room?.imageAlt}
+                      <Image
+                        src={room?.imageSrc || Hotel}
+                        alt={''}
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />
                     </div>
@@ -77,12 +76,17 @@ function Page({}: Props) {
                           </p>
                         </h3>
                         <p className="mt-1 text-sm text-gray-500">
-                          Prize {room?.prize} $
+                          Prize{' '}
+                          {!isNaN(room?.prize) &&
+                            Number(room?.prize).toLocaleString(
+                              'it-IT',
+                              {
+                                style: 'currency',
+                                currency: 'VND',
+                              }
+                            )}
                         </p>
                       </div>
-                      {/* <p className="text-sm font-medium text-gray-900">
-                        {room?.province}
-                      </p> */}
                     </div>
                   </div>
                 ))}
