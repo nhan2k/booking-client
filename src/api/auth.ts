@@ -5,7 +5,7 @@ export const getProfile = async () => {
     const response = await axiosInterceptor.post('/auth/profile');
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(
       `Get profile fail ${error?.response?.data?.message}`
     );
@@ -20,7 +20,7 @@ export const registerAPI = async (data: any) => {
     );
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(
       `Register fail ${error?.response?.data?.message}`
     );

@@ -10,8 +10,6 @@ import { AiOutlineCheckCircle } from 'react-icons/ai';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { DateRangeType } from 'react-tailwindcss-datepicker/dist/types';
 import { toast } from 'react-toastify';
-import Hotel from '@/assets/images/hotel.jpg';
-import Image from 'next/image';
 
 type Props = {};
 
@@ -47,7 +45,8 @@ function Page({}: Props) {
       await router.push('/reservation');
     },
     async onError(error, variables, context) {
-      toast.error('Reserve Fail');
+      toast.error('Reserve fail try again');
+      query.refetch();
     },
   });
 
@@ -104,11 +103,11 @@ function Page({}: Props) {
         <div className="bg-white">
           <div className="pt-6">
             {/* Image gallery */}
-            <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-              <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-                <Image
-                  src={Hotel}
-                  alt={'alt'}
+            <div className="mx-auto mt-6 sm:px-6 lg:gap-x-8 lg:px-8 w-full">
+              <div className="aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
+                <img
+                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${query.data?.imgPath}`}
+                  alt={`${process.env.NEXT_PUBLIC_ENDPOINT}/${query.data?.imgPath}`}
                   className="h-full w-full object-cover object-center"
                 />
               </div>

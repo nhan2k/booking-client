@@ -7,7 +7,7 @@ type Props = {};
 function Page({}: Props) {
   const { data: session } = useSession();
   const user = session?.user;
-  if (user?.role !== 'admin') {
+  if ((user as any)?.role !== 'admin') {
     return (
       <section className="grid h-screen place-items-center">
         <div className="w-25">

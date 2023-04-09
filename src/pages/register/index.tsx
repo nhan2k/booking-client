@@ -27,6 +27,7 @@ function Page({}: Props) {
   const { push } = useRouter();
 
   const mutation = useMutation({
+    mutationKey: ['register'],
     mutationFn: registerAPI,
     async onSuccess(data, variables, context) {
       toast.success('Register success');
@@ -46,6 +47,7 @@ function Page({}: Props) {
     mutation.mutate(data);
   };
 
+  console.log('🚀 ~ file: index.tsx:45 ~ Page ~ errors:', errors);
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

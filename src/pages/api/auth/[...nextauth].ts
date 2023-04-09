@@ -51,8 +51,8 @@ export const authOptions: AuthOptions = {
     // ...add more providers here
   ],
   callbacks: {
-    async jwt({ token, user }: { token: any; user: any }) {
-      return { ...user, ...token };
+    async jwt(params) {
+      return { ...params.user, ...params.token };
     },
     async session({
       session,
@@ -71,13 +71,10 @@ export const authOptions: AuthOptions = {
       };
       return session;
     },
-    // redirect({ url, baseUrl }) {
-    //   return '/';
-    // },
   },
-  //   pages: {
-  //     signIn: '/login',
-  //   },
+  pages: {
+    signIn: '/login',
+  },
 };
 
 export default NextAuth(authOptions);

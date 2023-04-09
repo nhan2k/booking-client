@@ -17,6 +17,7 @@ type Inputs = {
   AC: boolean;
   heater: boolean;
   otherFacilities: string;
+  file: FileList;
 };
 type Props = {};
 
@@ -76,6 +77,7 @@ function Page({}: Props) {
           <form
             className="min-w-[calc(50%)]"
             onSubmit={handleSubmit(onSubmit)}
+            encType="multipart/form-data"
           >
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
@@ -132,12 +134,14 @@ function Page({}: Props) {
                     </label>
                     <div className="mt-2">
                       <input
-                        {...register('capacity', { required: true })}
+                        {...register('capacity', {
+                          min: 1,
+                        })}
                         type="number"
                         id="capacity"
                         name="capacity"
                         className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                        defaultValue={''}
+                        required={true}
                       />
                       {errors.capacity && (
                         <span className="text-red-600">
@@ -276,6 +280,31 @@ function Page({}: Props) {
                               defaultValue={''}
                             />
                           </div>
+                        </div>
+
+                        <div className="col-span-full ">
+                          <h1 className="text-md block font-medium leading-6 text-gray-900 my-4">
+                            Upload Image
+                          </h1>
+                          <input
+                            type="file"
+                            required={true}
+                            {...register('file', {
+                              validate: {
+                                accept: (value) =>
+                                  [
+                                    'image/png',
+                                    'image/jpeg',
+                                    'image/jpg',
+                                  ].includes(value?.[0]?.type),
+                                maxSize: (value) =>
+                                  value?.[0]?.size <= 3000000,
+                              },
+                            })}
+                          />
+                          {errors.file && (
+                            <p>{errors.file.message}</p>
+                          )}
                         </div>
                       </div>
                     </div>

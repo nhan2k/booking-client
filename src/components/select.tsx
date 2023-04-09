@@ -1,7 +1,8 @@
+import * as React from 'react';
 import { TOption } from '@/types';
-import React from 'react';
 
 type Props = {
+  key: string | number;
   options: TOption[];
   label?: string;
   props: any;
@@ -17,7 +18,9 @@ function Component({ options, label, props }: Props) {
       )}
       <select id={label} {...props}>
         {options.map((e) => (
-          <option value={e.value}>{e.label}</option>
+          <option value={e.value} key={e.value}>
+            {e.label}
+          </option>
         ))}
       </select>
     </React.Fragment>

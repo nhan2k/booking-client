@@ -9,7 +9,7 @@ type Props = {};
 
 function Page({}: Props) {
   const query = useQuery({
-    queryKey: ['get-reservation'],
+    queryKey: ['reservation'],
     queryFn: async () => await getReservation(),
   });
 

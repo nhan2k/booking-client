@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component {
   }
   render() {
     // Check if the error is thrown
-    if (this.state?.hasError) {
+    if ((this.state as any)?.hasError) {
       // You can render any custom fallback UI
       return (
         <div>
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component {
 
     // Return children components in case of no error
 
-    return this.props?.children;
+    return (this.props as any)?.children;
   }
 }
 

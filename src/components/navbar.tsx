@@ -13,6 +13,7 @@ type Props = {
   status: any;
 };
 const navigation = [
+  { name: 'Home', href: '/', isPublic: true },
   { name: 'Hotels List', href: '/hotel/list', auth: 'authenticated' },
   {
     name: 'Rooms List',

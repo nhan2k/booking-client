@@ -35,7 +35,18 @@ export const getRooms = async (query: {
 
 export const postRooms = async (data: any) => {
   try {
-    const response = await axiosInterceptor.post('/room', data);
+    const formData = new FormData();
+    formData.append('file', data.file[0]);
+    formData.append('AC', data.AC);
+    formData.append('capacity', data.capacity);
+    formData.append('facilities', data.facilities);
+    formData.append('heater', data.heater);
+    formData.append('hotel_id', data.hotel_id);
+    formData.append('otherFacilities', data.otherFacilities);
+    formData.append('prize', data.prize);
+    formData.append('wifi', data.wifi);
+
+    const response = await axiosInterceptor.post('/room', formData);
 
     return response.data;
   } catch (error) {
@@ -48,9 +59,9 @@ export const getRoomsByHotelId = async (hotel_id?: string) => {
     throw new Error('Not Found Hotel ID');
   }
   try {
-    const params = new URLSearchParams([['hotelId', hotel_id]]);
-
-    const response = await axiosInterceptor.get('/room/', { params });
+    const response = await axiosInterceptor.get(
+      `/room/byHotel/${hotel_id}`
+    );
 
     return response.data;
   } catch (error) {

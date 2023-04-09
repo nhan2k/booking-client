@@ -1,9 +1,14 @@
 import { axiosInterceptor } from '@/config/axios';
-import { AxiosError } from 'axios';
 
 export const postHotel = async (data: any) => {
   try {
-    const response = await axiosInterceptor.post('/hotel', data);
+    const formData = new FormData();
+    formData.append('file', data.file[0]);
+    formData.append('hotel_name', data.hotel_name);
+    formData.append('location', data.location);
+    formData.append('province', data.province);
+
+    const response = await axiosInterceptor.post('/hotel', formData);
 
     return response;
   } catch (error: any) {

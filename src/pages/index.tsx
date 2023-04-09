@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google';
 import React from 'react';
 import Layout from '@/components/layout';
 import Link from 'next/link';
@@ -14,15 +13,9 @@ type Inputs = {
   dateRange: DateRangeType;
   traveller: number;
 };
-const inter = Inter({ subsets: ['latin'] });
 
 function Page() {
   const router = useRouter();
-  const [value, setValue] = React.useState<DateRangeType>({
-    startDate: new Date(),
-    endDate: new Date(),
-  });
-  const [provinceValue, setProvinceValue] = React.useState(null);
 
   const {
     register,

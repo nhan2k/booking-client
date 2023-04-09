@@ -57,9 +57,9 @@ function Page({}: Props) {
                     }
                   >
                     <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                      <Image
-                        src={room?.imageSrc || Hotel}
-                        alt={''}
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${room?.imgPath}`}
+                        alt={`${process.env.NEXT_PUBLIC_ENDPOINT}/${room?.imgPath}`}
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />
                     </div>

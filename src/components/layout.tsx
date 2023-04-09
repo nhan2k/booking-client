@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Navbar from './navbar';
 import Footer from './footer';
 import Head from 'next/head';
@@ -11,8 +11,14 @@ function Layout({ children }: Props) {
 
   React.useEffect(() => {
     if (status === 'authenticated') {
-      sessionStorage.setItem('access-token', session?.access_token);
-      sessionStorage.setItem('refresh-token', session?.refresh_token);
+      sessionStorage.setItem(
+        'access-token',
+        (session as any)?.access_token
+      );
+      sessionStorage.setItem(
+        'refresh-token',
+        (session as any)?.refresh_token
+      );
     } else {
       sessionStorage.removeItem('access-token');
       sessionStorage.removeItem('refresh-token');

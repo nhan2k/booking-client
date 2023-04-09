@@ -3,8 +3,7 @@ import Layout from '@/components/layout';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React from 'react';
-import Hotel from '@/assets/images/hotel.jpg';
+import * as React from 'react';
 
 type Props = {};
 
@@ -13,6 +12,7 @@ const Page = (props: Props) => {
     queryKey: ['get-my-hotels'],
     queryFn: getMyHotels,
   });
+  console.log('🚀 ~ file: index.tsx:16 ~ Page ~ query:', query.data);
   const router = useRouter();
 
   const handleOnClick = async (id: number) => {
@@ -22,6 +22,10 @@ const Page = (props: Props) => {
   const handleBtnPostClick = async () => {
     await router.push(`/hotel/post`);
   };
+  console.log(
+    '🚀 ~ file: index.tsx:59 ~ Page ~ process.env.ENDPOINT:',
+    process.env.ENDPOINT
+  );
 
   return (
     <Layout>
@@ -52,9 +56,9 @@ const Page = (props: Props) => {
                     }
                   >
                     <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                      <Image
-                        src={hotel?.imageSrc || Hotel}
-                        alt={''}
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${hotel?.imgPath}`}
+                        alt={`${process.env.NEXT_PUBLIC_ENDPOINT}/${hotel?.imgPath}`}
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />
                     </div>

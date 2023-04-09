@@ -5,11 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { optionProvince } from '@/constants/option-province';
 import { useRouter } from 'next/router';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-} from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { postHotel } from '@/api/hotel';
 import { toast } from 'react-toastify';
 
@@ -20,28 +16,19 @@ type Inputs = {
   file: FileList;
 };
 type Props = {};
-// Create a client
-const queryClient = new QueryClient();
 function Page({}: Props) {
   const { push } = useRouter();
   const { data: session, status } = useSession();
 
-  // Queries
-  const query = useQuery({
-    queryKey: ['hotel'],
-    queryFn: postHotel,
-  });
-
   const mutation = useMutation({
+    mutationKey: ['hotel'],
     mutationFn: postHotel,
     onSuccess(data, variables, context) {
       toast.success('Post hotel success');
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
       push('/');
     },
     onError(error, variables, context) {
       toast.error(`${error}`);
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 
@@ -55,7 +42,7 @@ function Page({}: Props) {
     formState: { errors },
     control,
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     mutation.mutate(data);
   };
 
@@ -63,7 +50,10 @@ function Page({}: Props) {
     <Layout>
       <div className="flex justify-center mt-20">
         {status === 'authenticated' ? (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            encType="multipart/form-data"
+          >
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -146,15 +136,16 @@ function Page({}: Props) {
                     <input
                       type="file"
                       {...register('file', {
+                        required: true,
                         validate: {
                           accept: (value) =>
                             [
                               'image/png',
                               'image/jpeg',
                               'image/jpg',
-                            ].includes(value[0].type),
+                            ].includes(value?.[0]?.type),
                           maxSize: (value) =>
-                            value[0].size <= 3000000,
+                            value?.[0]?.size <= 3000000,
                         },
                       })}
                     />
