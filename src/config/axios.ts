@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const axiosInterceptor = axios.create({
   baseURL: 'http://localhost:3001',
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
 });
 
 // Adding Authorization header for all requests
