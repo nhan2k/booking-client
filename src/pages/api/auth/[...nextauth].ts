@@ -72,6 +72,9 @@ export const authOptions: AuthOptions = {
       };
       return session;
     },
+    redirect(params) {
+      return params.baseUrl;
+    },
   },
   pages: {
     signIn: '/login',

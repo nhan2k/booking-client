@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const axiosInterceptor = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL:
+    process.env.NEXT_PUBLIC_ENDPOINT ||
+    'https://booking-3lzv.onrender.com',
   headers: {
     'Access-Control-Allow-Origin': '*',
   },
