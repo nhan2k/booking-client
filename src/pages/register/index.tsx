@@ -1,17 +1,13 @@
-import Link from 'next/link';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
-import { getProfile, registerAPI } from '@/api/auth';
+import { registerAPI } from '@/api/auth';
 import { toast } from 'react-toastify';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-} from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Hotel from '@/assets/images/hotel.jpg';
+import Link from 'next/link';
 
 type Inputs = {
   email: string;
@@ -30,11 +26,11 @@ function Page({}: Props) {
     mutationKey: ['register'],
     mutationFn: registerAPI,
     async onSuccess(data, variables, context) {
-      toast.success('Register success');
-      await push('/');
+      toast.success(`Register success`);
+      await signIn();
     },
     onError(error, variables, context) {
-      toast.error(`Error: ${error}`);
+      toast.error(`Register error: ${error}`);
     },
   });
 
@@ -47,14 +43,16 @@ function Page({}: Props) {
     mutation.mutate(data);
   };
 
-  console.log('🚀 ~ file: index.tsx:45 ~ Page ~ errors:', errors);
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <p className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+        <Link
+          href={'/'}
+          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+        >
           <Image className="w-8 h-8 mr-2" src={Hotel} alt="logo" />
           Register
-        </p>
+        </Link>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -82,6 +80,7 @@ function Page({}: Props) {
                   placeholder="name@gmail.com"
                   required={true}
                 />
+                {errors.email && <p>{errors.email.message}</p>}
               </div>
               <div>
                 <label
@@ -97,6 +96,7 @@ function Page({}: Props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
+                {errors.password && <p>{errors.password.message}</p>}
               </div>
               <div>
                 <label
@@ -113,6 +113,9 @@ function Page({}: Props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
+                {errors.first_name && (
+                  <p>{errors.first_name.message}</p>
+                )}
               </div>
               <div>
                 <label
@@ -128,6 +131,9 @@ function Page({}: Props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
+                {errors.last_name && (
+                  <p>{errors.last_name.message}</p>
+                )}
               </div>
               <div>
                 <label
@@ -138,12 +144,21 @@ function Page({}: Props) {
                 </label>
 
                 <input
-                  {...register('phone_number')}
+                  {...register('phone_number', {
+                    pattern: {
+                      value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
+                      message: 'Invalid phone number',
+                    },
+                  })}
+                  placeholder="Accept: 0388888888, 0588888888, 0788888888, 0888888888, 098888888, 8488888888"
                   type="phone_number"
                   id="phone_number"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
+                {errors.phone_number && (
+                  <p>{errors.phone_number.message}</p>
+                )}
               </div>
               <div>
                 <label
@@ -159,6 +174,7 @@ function Page({}: Props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
+                {errors.location && <p>{errors.location.message}</p>}
               </div>
               <button
                 type="submit"

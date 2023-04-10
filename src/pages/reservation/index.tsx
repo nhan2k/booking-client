@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 import Hotel from '@/assets/images/hotel.jpg';
+import PaymentModal from '@/components/payment';
+import CancelPayment from '@/components/cancel-payment';
 
 type Props = {};
 
@@ -23,11 +25,11 @@ function Page({}: Props) {
               key={element?.reservation_id}
             >
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0">
-                  <Image
-                    className="w-8 h-8 rounded-full"
-                    src={Hotel}
-                    alt="Neil image"
+                <div className="flex-shrink-0 w-20 h-20">
+                  <img
+                    className="w-full h-full object-cover object-center"
+                    src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${element?.__hotel__?.imgPath}`}
+                    alt={element?.__hotel__?.imgPath}
                   />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -82,6 +84,10 @@ function Page({}: Props) {
                         element?.created_at
                       ).toLocaleTimeString()}
                   </p>
+
+                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    Room Number: {element?.note}
+                  </p>
                 </div>
 
                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -90,11 +96,37 @@ function Page({}: Props) {
                   ) &&
                     Number(
                       element?.____transactions____?.[0]?.amount
-                    ).toLocaleString('it-IT', {
+                    ).toLocaleString('en-US', {
                       style: 'currency',
-                      currency: 'VND',
+                      currency: 'USD',
                     })}
                 </div>
+                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                  <PaymentModal
+                    value={{
+                      amount: Number(
+                        element?.____transactions____?.[0]?.amount
+                      ).toFixed(2),
+                      transaction_id:
+                        element?.____transactions____?.[0]
+                          ?.transaction_id,
+                    }}
+                    status={
+                      element?.____transactions____?.[0]?.status
+                    }
+                  />
+                </div>
+                {element?.____transactions____?.[0]?.status ===
+                'paid' ? (
+                  <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                    <CancelPayment
+                      reservation_id={element?.reservation_id}
+                      status={element?.status}
+                    />
+                  </div>
+                ) : (
+                  <React.Fragment />
+                )}
               </div>
             </li>
           ))}

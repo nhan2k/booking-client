@@ -7,6 +7,7 @@ type TDataReserve = {
   checkout: DateType;
   balance_amount: number;
   hotel_id: number;
+  room_id: number;
 };
 
 export const reserve = async (data: TDataReserve) => {
@@ -29,5 +30,17 @@ export const getReservation = async () => {
     return response.data;
   } catch (error) {
     throw new Error('Reservation fail!');
+  }
+};
+
+export const updateReservation = async (reservation_id: number) => {
+  try {
+    const response = await axiosInterceptor.patch(
+      `/reservation/${reservation_id}`
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Update reservation fail!');
   }
 };

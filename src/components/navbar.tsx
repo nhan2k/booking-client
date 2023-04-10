@@ -39,7 +39,7 @@ function Navbar({ session, status }: Props) {
         className="flex items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
-        <div className="flex lg:flex-1">
+        <div className="flex lg:flex-1 lg:justify-start">
           <Link
             href="/"
             className="-m-1.5 p-1.5 w-[calc(4rem)] h-[calc(4rem)]"

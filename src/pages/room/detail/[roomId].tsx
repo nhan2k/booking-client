@@ -81,6 +81,7 @@ function Page({}: Props) {
       guest_list: data.traveller,
       balance_amount: totalAmount,
       hotel_id: query?.data?.__hotel__?.hotel_id,
+      room_id: query?.data?.room_id,
     });
   };
 
@@ -126,10 +127,10 @@ function Page({}: Props) {
                 <p className="text-3xl tracking-tight text-gray-900">
                   {!isNaN(query?.data?.prize) &&
                     Number(query?.data?.prize).toLocaleString(
-                      'it-IT',
+                      'en-US',
                       {
                         style: 'currency',
-                        currency: 'VND',
+                        currency: 'USD',
                       }
                     )}
                   / day
@@ -204,9 +205,9 @@ function Page({}: Props) {
                   <label htmlFor="">Total Amount</label>
                   <p className="text-3xl tracking-tight text-gray-900">
                     {!isNaN(totalAmount) &&
-                      Number(totalAmount).toLocaleString('it-IT', {
+                      Number(totalAmount).toLocaleString('en-US', {
                         style: 'currency',
-                        currency: 'VND',
+                        currency: 'USD',
                       })}
                   </p>
                 </div>

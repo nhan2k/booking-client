@@ -412,9 +412,9 @@ const Page = (props: Props) => {
                                   {!isNaN(room?.prize) &&
                                     Number(
                                       room?.prize
-                                    ).toLocaleString('it-IT', {
+                                    ).toLocaleString('en-US', {
                                       style: 'currency',
-                                      currency: 'VND',
+                                      currency: 'USD',
                                     })}
                                 </p>
                               </div>
