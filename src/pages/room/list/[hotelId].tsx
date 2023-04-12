@@ -47,11 +47,11 @@ function Page({}: Props) {
             </div>
 
             {query.isSuccess ? (
-              <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 cursor-pointer">
+              <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-1 lg:grid-cols-2 xl:gap-x-8 cursor-pointer">
                 {query?.data?.map((room: any) => (
                   <div
                     key={room?.room_id}
-                    className="group relative"
+                    className="group"
                     onClick={async () =>
                       await handleOnClickItem(room?.room_id)
                     }
@@ -63,20 +63,17 @@ function Page({}: Props) {
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />
                     </div>
-                    <div className="mt-4 flex justify-between">
+                    <div className="mt-4">
                       <div>
-                        <h3 className="text-sm text-gray-700">
+                        <h3 className="text-sm text-gray-700 font-bold">
                           <p>
-                            facilities
-                            <span
-                              aria-hidden="true"
-                              className="absolute inset-0"
-                            />
-                            {room?.facilities}
+                            Room Number{' '}
+                            <span className="text-blue-600">
+                              {room?.room_id}
+                            </span>
                           </p>
                         </h3>
                         <p className="mt-1 text-sm text-gray-500">
-                          Prize{' '}
                           {!isNaN(room?.prize) &&
                             Number(room?.prize).toLocaleString(
                               'en-US',
@@ -86,6 +83,12 @@ function Page({}: Props) {
                               }
                             )}
                         </p>
+                        <h3 className="text-sm text-gray-700 truncate">
+                          <p>
+                            <span aria-hidden="true" />
+                            {room?.facilities}
+                          </p>
+                        </h3>
                       </div>
                     </div>
                   </div>

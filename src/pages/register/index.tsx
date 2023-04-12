@@ -20,7 +20,7 @@ type Inputs = {
 type Props = {};
 
 function Page({}: Props) {
-  const { push } = useRouter();
+  const { query } = useRouter();
 
   const mutation = useMutation({
     mutationKey: ['register'],
@@ -40,7 +40,12 @@ function Page({}: Props) {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
-    mutation.mutate(data);
+    const newData = {
+      ...data,
+      role: typeof query.role === 'string' ? query.role : undefined,
+    };
+
+    mutation.mutate(newData);
   };
 
   return (
@@ -80,7 +85,11 @@ function Page({}: Props) {
                   placeholder="name@gmail.com"
                   required={true}
                 />
-                {errors.email && <p>{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-red-500">
+                    This field is required
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -96,7 +105,11 @@ function Page({}: Props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
-                {errors.password && <p>{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-red-500">
+                    This field is required
+                  </p>
+                )}{' '}
               </div>
               <div>
                 <label
@@ -114,7 +127,9 @@ function Page({}: Props) {
                   required={true}
                 />
                 {errors.first_name && (
-                  <p>{errors.first_name.message}</p>
+                  <p className="text-red-500">
+                    This field is required
+                  </p>
                 )}
               </div>
               <div>
@@ -132,7 +147,9 @@ function Page({}: Props) {
                   required={true}
                 />
                 {errors.last_name && (
-                  <p>{errors.last_name.message}</p>
+                  <p className="text-red-500">
+                    This field is required
+                  </p>
                 )}
               </div>
               <div>
@@ -157,7 +174,9 @@ function Page({}: Props) {
                   required={true}
                 />
                 {errors.phone_number && (
-                  <p>{errors.phone_number.message}</p>
+                  <p className="text-red-500">
+                    {errors.phone_number.message}
+                  </p>
                 )}
               </div>
               <div>
@@ -174,7 +193,11 @@ function Page({}: Props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
                 />
-                {errors.location && <p>{errors.location.message}</p>}
+                {errors.location && (
+                  <p className="text-red-500">
+                    This field is required
+                  </p>
+                )}
               </div>
               <button
                 type="submit"

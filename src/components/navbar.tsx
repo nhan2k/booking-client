@@ -13,21 +13,32 @@ type Props = {
   status: any;
 };
 const navigation = [
-  { name: 'Home', href: '/', isPublic: true },
-  { name: 'Hotels List', href: '/hotel/list', auth: 'authenticated' },
+  { name: 'Hotels List', href: '/hotel/list', role: 'hotelier' },
   {
     name: 'Rooms List',
     href: `/room/list?pageSize=10&pageNumber=1`,
+    isPublic: true,
+    role: 'user',
+  },
+  {
+    name: 'For Hotelier',
+    href: '/register?role=hotelier',
     isPublic: true,
   },
   {
     name: 'Reservation',
     href: '/reservation',
-    auth: 'authenticated',
+    role: 'user',
   },
 ];
 function Navbar({ session, status }: Props) {
   const { push } = useRouter();
+  const [role, setRole] = React.useState<string | null>('');
+
+  React.useEffect(() => {
+    const roleGet = sessionStorage && sessionStorage.getItem('role');
+    setRole(roleGet);
+  }, []);
 
   const handleNavigate = async (href: string) => {
     await push(href);
@@ -58,21 +69,29 @@ function Navbar({ session, status }: Props) {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
+          <button
+            onClick={async () => await handleNavigate('/')}
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
+            Home
+          </button>
           {navigation.map((item) => {
             if (status === 'authenticated') {
-              return (
-                <button
-                  onClick={async () =>
-                    await handleNavigate(item.href)
-                  }
-                  key={item.name}
-                  className="text-sm font-semibold leading-6 text-gray-900"
-                >
-                  {item.name}
-                </button>
-              );
+              if (role === item.role) {
+                return (
+                  <button
+                    onClick={async () =>
+                      await handleNavigate(item.href)
+                    }
+                    key={item.name}
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    {item.name}
+                  </button>
+                );
+              }
             }
-            if (item.isPublic) {
+            if (item.isPublic && status !== 'authenticated') {
               return (
                 <button
                   onClick={async () =>

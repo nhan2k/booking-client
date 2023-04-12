@@ -1,5 +1,7 @@
 import { getMyHotels } from '@/api/hotel';
 import Layout from '@/components/layout';
+import withAuthentication from '@/lib/withAuthentication';
+import { withRoleHotelier } from '@/lib/withAuthorization';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,7 +14,6 @@ const Page = (props: Props) => {
     queryKey: ['get-my-hotels'],
     queryFn: getMyHotels,
   });
-  console.log('🚀 ~ file: index.tsx:16 ~ Page ~ query:', query.data);
   const router = useRouter();
 
   const handleOnClick = async (id: number) => {
@@ -22,10 +23,6 @@ const Page = (props: Props) => {
   const handleBtnPostClick = async () => {
     await router.push(`/hotel/post`);
   };
-  console.log(
-    '🚀 ~ file: index.tsx:59 ~ Page ~ process.env.ENDPOINT:',
-    process.env.ENDPOINT
-  );
 
   return (
     <Layout>
@@ -46,11 +43,11 @@ const Page = (props: Props) => {
             </div>
 
             {query.isSuccess ? (
-              <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 cursor-pointer">
+              <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-2 xl:gap-x-8 cursor-pointer">
                 {query?.data?.map((hotel: any) => (
                   <div
                     key={hotel?.hotel_id}
-                    className="group relative"
+                    className="group truncate"
                     onClick={async () =>
                       await handleOnClick(hotel?.hotel_id)
                     }
@@ -62,23 +59,18 @@ const Page = (props: Props) => {
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />
                     </div>
-                    <div className="mt-4 flex justify-between">
-                      <div>
-                        <h3 className="text-sm text-gray-700">
-                          <a href={hotel?.href}>
-                            <span
-                              aria-hidden="true"
-                              className="absolute inset-0"
-                            />
-                            {hotel?.hotel_name}
-                          </a>
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {hotel?.location}
-                        </p>
-                      </div>
+                    <div className="mt-4">
+                      <h3 className="text-sm text-gray-700 font-bold">
+                        <a href={hotel?.href}>
+                          <span aria-hidden="true" />
+                          {hotel?.hotel_name}
+                        </a>
+                      </h3>
                       <p className="text-sm font-medium text-gray-900">
                         {hotel?.province}
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500 max-h-14 truncate">
+                        {hotel?.location}
                       </p>
                     </div>
                   </div>
@@ -94,4 +86,4 @@ const Page = (props: Props) => {
   );
 };
 
-export default Page;
+export default withAuthentication(withRoleHotelier(Page));

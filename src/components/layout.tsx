@@ -19,9 +19,11 @@ function Layout({ children }: Props) {
         'refresh-token',
         (session as any)?.refresh_token
       );
+      sessionStorage.setItem('role', (session as any)?.user?.role);
     } else {
       sessionStorage.removeItem('access-token');
       sessionStorage.removeItem('refresh-token');
+      sessionStorage.removeItem('role');
     }
   }, [status]);
 

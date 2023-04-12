@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useMutation } from '@tanstack/react-query';
 import { postHotel } from '@/api/hotel';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 
 type Inputs = {
   hotel_name: string;
@@ -94,19 +95,29 @@ function Page({}: Props) {
                       Provinve / City
                     </label>
                     <div className="mt-2">
-                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        <select
-                          {...register('province')}
-                          id="province"
-                          autoComplete="province"
-                          className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        >
-                          {optionProvince.map((e, i) => (
-                            <option key={i} value={e.value}>
-                              {e.label}
-                            </option>
-                          ))}
-                        </select>
+                      <div className="flex rounded-md shadow-sm sm:max-w-md">
+                        <Controller
+                          name="province"
+                          control={control}
+                          render={({
+                            field: { onChange, value },
+                          }) => (
+                            <Select
+                              className="w-full"
+                              options={optionProvince}
+                              placeholder="Where ?"
+                              onChange={(val) =>
+                                val && onChange(val.value)
+                              }
+                            />
+                          )}
+                          rules={{ required: true }}
+                        />
+                        {errors.province && (
+                          <span className="text-red-600">
+                            This field is required
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

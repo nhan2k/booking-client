@@ -117,14 +117,25 @@ function Page({}: Props) {
             <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
               <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                  Hotel Name: {query?.data?.__hotel__?.hotel_name}
+                  Hotel Name:{' '}
+                  <span className="text-blue-500">
+                    {query?.data?.__hotel__?.hotel_name}
+                  </span>
+                </h1>
+              </div>
+              <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+                <h1 className="text-lg font-semibold tracking-tight text-gray-900 sm:text-xl">
+                  Room Number:{' '}
+                  <span className="text-blue-500">
+                    {query?.data?.room_id}
+                  </span>
                 </h1>
               </div>
 
               {/* Options */}
               <div className="mt-4 lg:row-span-3 lg:mt-0">
                 <h2 className="sr-only">Product information</h2>
-                <p className="text-3xl tracking-tight text-gray-900">
+                <p className="text-3xl tracking-tight text-gray-900 ">
                   {!isNaN(query?.data?.prize) &&
                     Number(query?.data?.prize).toLocaleString(
                       'en-US',
@@ -221,10 +232,22 @@ function Page({}: Props) {
               </div>
 
               <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-                <h4>location : {query?.data?.__hotel__?.location}</h4>
-                <h4>Province : {query?.data?.__hotel__?.province}</h4>
-                <h4>Capacity : {query?.data?.capacity}</h4>
-                <h4>Facilities : {query?.data?.facilities}</h4>
+                <h4 className="my-2">
+                  <span className="font-semibold">Location</span> :{' '}
+                  {query?.data?.__hotel__?.location}
+                </h4>
+                <h4 className="my-2">
+                  <span className="font-semibold">Province</span> :{' '}
+                  {query?.data?.__hotel__?.province}
+                </h4>
+                <h4 className="my-2">
+                  <span className="font-semibold">Capacity</span> :{' '}
+                  {query?.data?.capacity}
+                </h4>
+                <h4 className="my-2">
+                  <span className="font-semibold">Facilities</span> :{' '}
+                  {query?.data?.facilities}
+                </h4>
                 <div className="mt-10">
                   <h3 className="text-sm font-medium text-gray-900">
                     Room Type:
@@ -276,27 +299,29 @@ function Page({}: Props) {
                     )}
                   </div>
                 </div>
-                <h4>
+                <h4 className="font-semibold">
                   {
                     query.data?.____roomTypes____?.[0]
                       ?.other_facilities
                   }
                   Other Facilities :
                 </h4>
-                <h4 className="my-4">Owner Infomation:</h4>
+                <h4 className="my-4 font-semibold">
+                  Owner Infomation:
+                </h4>
                 <ul
                   role="list"
                   className="list-disc space-y-2 pl-4 text-sm"
                 >
                   <li className="text-gray-400">
                     <div className="text-gray-600 flex justify-start items-center gap-2">
-                      <p>Email :</p>
+                      <p className="font-semibold">Email :</p>
                       <p>{query.data?.__hotel__?.__user__?.email}</p>
                     </div>
                   </li>
                   <li className="text-gray-400">
                     <div className="text-gray-600 flex justify-start items-center gap-2">
-                      <p>Full Name :</p>
+                      <p className="font-semibold">Full Name :</p>
                       <p>
                         {query.data?.__hotel__?.__user__?.last_name}{' '}
                         {query.data?.__hotel__?.__user__?.first_name}
@@ -305,7 +330,7 @@ function Page({}: Props) {
                   </li>
                   <li className="text-gray-400">
                     <div className="text-gray-600 flex justify-start items-center gap-2">
-                      <p>Phone Number :</p>
+                      <p className="font-semibold">Phone Number :</p>
                       <p>
                         {
                           query.data?.__hotel__?.__user__

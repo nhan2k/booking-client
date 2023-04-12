@@ -214,10 +214,7 @@ const Page = (props: Props) => {
               </h1>
 
               <div className="flex items-center">
-                <Menu
-                  as="div"
-                  className="relative inline-block text-left"
-                >
+                <Menu as="div" className="inline-block text-left">
                   <div>
                     <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                       Sort
@@ -237,7 +234,7 @@ const Page = (props: Props) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         {sortOptions.map((option) => (
                           <Menu.Item key={option.name}>
@@ -380,15 +377,15 @@ const Page = (props: Props) => {
                           {query?.data?.[0]?.map((room: any) => (
                             <div
                               key={room?.room_id}
-                              className="group relative"
+                              className="group"
                               onClick={async () =>
                                 await handleOnClick(room?.room_id)
                               }
                             >
                               <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                                <Image
-                                  src={room?.imageSrc || Hotel}
-                                  alt={''}
+                                <img
+                                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${room?.imgPath}`}
+                                  alt={`${process.env.NEXT_PUBLIC_ENDPOINT}/${room?.imgPath}`}
                                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                 />
                               </div>
@@ -398,7 +395,7 @@ const Page = (props: Props) => {
                                     <p>
                                       <span
                                         aria-hidden="true"
-                                        className="absolute inset-0"
+                                        className="inset-0"
                                       />
                                       capacity {room?.capacity}
                                     </p>

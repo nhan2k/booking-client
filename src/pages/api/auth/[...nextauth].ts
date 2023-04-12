@@ -45,7 +45,9 @@ export const authOptions: AuthOptions = {
         );
         const user = await res.json();
         if (res.ok && user) {
-          return user;
+          if (user?.user?.role !== 'admin') {
+            return user;
+          }
         } else return null;
       },
     }),
