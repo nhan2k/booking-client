@@ -66,7 +66,10 @@ function Page({}: Props) {
   }, [value.startDate, value.endDate]);
 
   const totalDays = getTotalDays();
-  const totalAmount = totalDays * query?.data?.prize;
+  const totalAmount =
+    totalDays * query?.data?.prize > 0
+      ? totalDays * query?.data?.prize - query?.data?.prize
+      : 0;
 
   const {
     register,

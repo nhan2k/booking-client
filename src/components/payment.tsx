@@ -101,19 +101,17 @@ function PaymentModal({ value, status }: Props) {
                               return actions.order
                                 .capture()
                                 .then((details: any) => {
-                                  console.log(
-                                    '🚀 ~ file: payment.tsx:93 ~ .then ~ details:',
-                                    details
-                                  );
                                   mutation.mutate({
                                     transaction_id:
                                       value.transaction_id,
+                                    capture_id: details.id,
                                   });
                                   const name =
                                     details.payer.name.given_name;
                                   toast.success(
                                     `Transaction completed by ${name}`
                                   );
+                                  setOpen(false);
                                 });
                             }}
                           />
@@ -122,13 +120,6 @@ function PaymentModal({ value, status }: Props) {
                     </div>
                   </div>
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button
-                      type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                      onClick={() => setOpen(false)}
-                    >
-                      Finish
-                    </button>
                     <button
                       type="button"
                       className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
