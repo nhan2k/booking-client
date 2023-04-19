@@ -3,6 +3,7 @@ import { getRoomId } from '@/api/room';
 import Layout from '@/components/layout';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import moment from 'moment';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ interface Range {
 }
 
 function Page({}: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
 
   const room_id =
@@ -136,103 +138,109 @@ function Page({}: Props) {
               </div>
 
               {/* Options */}
-              <div className="mt-4 lg:row-span-3 lg:mt-0">
-                <h2 className="sr-only">Product information</h2>
-                <p className="text-3xl tracking-tight text-gray-900 ">
-                  {!isNaN(query?.data?.prize) &&
-                    Number(query?.data?.prize).toLocaleString(
-                      'en-US',
-                      {
-                        style: 'currency',
-                        currency: 'USD',
-                      }
+              {(session?.user as any)?.role === 'user' ? (
+                <div className="mt-4 lg:row-span-3 lg:mt-0">
+                  <h2 className="sr-only">Product information</h2>
+                  <p className="text-3xl tracking-tight text-gray-900 ">
+                    {!isNaN(query?.data?.prize) &&
+                      Number(query?.data?.prize).toLocaleString(
+                        'en-US',
+                        {
+                          style: 'currency',
+                          currency: 'USD',
+                        }
+                      )}
+                    / day
+                  </p>
+
+                  <div className="sm:col-span-4 mt-5">
+                    <label
+                      htmlFor="region"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Date
+                    </label>
+                    {query.isSuccess ? (
+                      <div className="mt-1 border rounded-md">
+                        <Controller
+                          name="dateRange"
+                          control={control}
+                          render={({
+                            field: { onChange, value },
+                          }) => (
+                            <Datepicker
+                              value={value}
+                              onChange={(val) => {
+                                val && setValue(val);
+                                val && onChange(val);
+                              }}
+                              minDate={new Date()}
+                              disabledDates={disableDate}
+                            />
+                          )}
+                          rules={{ required: true }}
+                        />
+                      </div>
+                    ) : (
+                      <React.Fragment />
                     )}
-                  / day
-                </p>
-
-                <div className="sm:col-span-4 mt-5">
-                  <label
-                    htmlFor="region"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Date
-                  </label>
-                  {query.isSuccess ? (
-                    <div className="mt-1 border rounded-md">
-                      <Controller
-                        name="dateRange"
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                          <Datepicker
-                            value={value}
-                            onChange={(val) => {
-                              val && setValue(val);
-                              val && onChange(val);
-                            }}
-                            minDate={new Date()}
-                            disabledDates={disableDate}
-                          />
-                        )}
-                        rules={{ required: true }}
-                      />
-                    </div>
-                  ) : (
-                    <React.Fragment />
-                  )}
-                  {errors.dateRange && (
-                    <p className="text-red-500">
-                      This field is required
-                    </p>
-                  )}
-                </div>
-
-                <div className="sm:col-span-2 mt-5">
-                  <label
-                    htmlFor="guest_list"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Travellers
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      {...register('traveller', {
-                        required: true,
-                        min: 1,
-                        max: 10,
-                      })}
-                      type="number"
-                      min={1}
-                      defaultValue={1}
-                      id="guest_list"
-                      autoComplete="guest_list"
-                      className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                    {errors.traveller && (
+                    {errors.dateRange && (
                       <p className="text-red-500">
                         This field is required
                       </p>
                     )}
                   </div>
-                </div>
 
-                <div className="mt-5">
-                  <label htmlFor="">Total Amount</label>
-                  <p className="text-3xl tracking-tight text-gray-900">
-                    {!isNaN(totalAmount) &&
-                      Number(totalAmount).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                      })}
-                  </p>
-                </div>
+                  <div className="sm:col-span-2 mt-5">
+                    <label
+                      htmlFor="guest_list"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Travellers
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        {...register('traveller', {
+                          required: true,
+                          min: 1,
+                          max: 10,
+                        })}
+                        type="number"
+                        min={1}
+                        defaultValue={1}
+                        id="guest_list"
+                        autoComplete="guest_list"
+                        className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                      {errors.traveller && (
+                        <p className="text-red-500">
+                          This field is required
+                        </p>
+                      )}
+                    </div>
+                  </div>
 
-                <button
-                  type="submit"
-                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Reserve
-                </button>
-              </div>
+                  <div className="mt-5">
+                    <label htmlFor="">Total Amount</label>
+                    <p className="text-3xl tracking-tight text-gray-900">
+                      {!isNaN(totalAmount) &&
+                        Number(totalAmount).toLocaleString('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                        })}
+                    </p>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    Reserve
+                  </button>
+                </div>
+              ) : (
+                <React.Fragment />
+              )}
 
               <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
                 <h4 className="my-2">
@@ -326,8 +334,8 @@ function Page({}: Props) {
                     <div className="text-gray-600 flex justify-start items-center gap-2">
                       <p className="font-semibold">Full Name :</p>
                       <p>
-                        {query.data?.__hotel__?.__user__?.last_name}{' '}
-                        {query.data?.__hotel__?.__user__?.first_name}
+                        {query.data?.__hotel__?.__user__?.first_name}{' '}
+                        {query.data?.__hotel__?.__user__?.last_name}
                       </p>
                     </div>
                   </li>

@@ -6,6 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import Select from 'react-select';
 import { toast } from 'react-toastify';
 
 type Inputs = {
@@ -89,8 +90,8 @@ function Page({}: Props) {
                     >
                       Select an Hotel
                     </label>
-                    <div className="mt-2 w-full">
-                      <Controller
+                    <div className="my-3 w-full">
+                      {/* <Controller
                         name="hotel_id"
                         control={control}
                         rules={{ required: true }}
@@ -113,6 +114,20 @@ function Page({}: Props) {
                             ))}
                           </select>
                         )}
+                      /> */}
+                      <Controller
+                        name="hotel_id"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <Select
+                            options={options}
+                            placeholder="Select hotel"
+                            onChange={(val) =>
+                              val && onChange(val.value)
+                            }
+                          />
+                        )}
+                        rules={{ required: true }}
                       />
                       {errors.hotel_id && (
                         <span className="text-red-600">
@@ -132,20 +147,21 @@ function Page({}: Props) {
                     >
                       Capacity
                     </label>
-                    <div className="mt-2">
+                    <div className="my-3">
                       <input
+                        type="number"
                         {...register('capacity', {
                           min: 1,
+                          max: 10,
                         })}
-                        type="number"
                         id="capacity"
+                        placeholder="Min 1 Max 10"
                         name="capacity"
                         className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                        required={true}
                       />
                       {errors.capacity && (
                         <span className="text-red-600">
-                          This field is required
+                          This field is Invalid
                         </span>
                       )}
                     </div>
@@ -157,21 +173,26 @@ function Page({}: Props) {
                       >
                         Prize
                       </label>
-                      <div className="mt-2">
+                      <div className="my-3 flex items-center p-1 pl-2 rounded-md ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 shadow-sm ">
+                        <p className="border-r-2 px-2">$</p>
                         <input
-                          {...register('prize', { required: true })}
                           type="number"
+                          {...register('prize', {
+                            required: true,
+                            min: 1,
+                            max: 1000000,
+                          })}
                           id="prize"
+                          placeholder="Min 1 & Max 1000000"
                           name="prize"
-                          className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                          defaultValue={''}
+                          className="pl-4 block w-full border-none ring-0 outline-none text-gray-900 sm:py-1.5 sm:text-sm sm:leading-6"
                         />
-                        {errors.prize && (
-                          <span className="text-red-600">
-                            This field is required
-                          </span>
-                        )}
                       </div>
+                      {errors.prize && (
+                        <span className="text-red-600">
+                          This field is Invalid
+                        </span>
+                      )}
                     </div>
 
                     <div className="col-span-full">
@@ -181,8 +202,8 @@ function Page({}: Props) {
                       >
                         Facilities
                       </label>
-                      <div className="mt-2">
-                        <input
+                      <div className="my-3">
+                        <textarea
                           {...register('facilities')}
                           id="facilities"
                           name="facilities"
@@ -196,8 +217,8 @@ function Page({}: Props) {
                       Room Type
                     </label>
                     <div className="col-span-full">
-                      <div className="mt-2">
-                        <div className="flex items-center mb-4">
+                      <div className="my-3">
+                        <div className="flex items-center">
                           <Controller
                             name="wifi"
                             control={control}
@@ -219,7 +240,7 @@ function Page({}: Props) {
                             Wifi
                           </label>
                         </div>
-                        <div className="flex items-center mb-4">
+                        <div className="flex items-center">
                           <Controller
                             name="AC"
                             control={control}
@@ -271,8 +292,8 @@ function Page({}: Props) {
                           >
                             Other Facilities
                           </label>
-                          <div className="mt-2">
-                            <input
+                          <div className="my-3">
+                            <textarea
                               {...register('otherFacilities')}
                               id="otherFacilities"
                               name="otherFacilities"

@@ -7,6 +7,7 @@ import { DateRangeType } from 'react-tailwindcss-datepicker/dist/types';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { optionProvince } from '@/constants/option-province';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 type Inputs = {
   province: string;
@@ -15,6 +16,7 @@ type Inputs = {
 };
 
 function Page() {
+  const { data: session } = useSession();
   const router = useRouter();
 
   const {
@@ -98,119 +100,123 @@ function Page() {
               </Link>
             </div>
           </div>
-          <div className="mx-auto max-w-7xl py-20">
-            <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="space-y-12">
-                  <div className="border-b border-gray-900/10 pb-12">
-                    <h2 className="text-center font-semibold leading-7 text-gray-900 text-5xl">
-                      Where to?
-                    </h2>
+          {(session?.user as any)?.role !== 'hotelier' ? (
+            <div className="mx-auto max-w-7xl py-20">
+              <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="space-y-12">
+                    <div className="border-b border-gray-900/10 pb-12">
+                      <h2 className="text-center font-semibold leading-7 text-gray-900 text-5xl">
+                        Where to?
+                      </h2>
 
-                    <div className="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-12">
-                      <div className="sm:col-span-5 sm:col-start-1">
-                        <label
-                          htmlFor="city"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Going to
-                        </label>
-                        <div className="mt-2">
-                          <Controller
-                            name="province"
-                            control={control}
-                            render={({
-                              field: { onChange, value },
-                            }) => (
-                              <Select
-                                options={optionProvince}
-                                placeholder="Where ?"
-                                onChange={(val) =>
-                                  val && onChange(val.value)
-                                }
-                              />
-                            )}
-                            rules={{ required: true }}
-                          />
-                          {errors.province && (
-                            <span className="text-red-600">
-                              This field is required
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="sm:col-span-4">
-                        <label
-                          htmlFor="region"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Date
-                        </label>
-                        <div className="mt-1 border rounded-md">
-                          <Controller
-                            name="dateRange"
-                            control={control}
-                            render={({
-                              field: { onChange, value },
-                            }) => (
-                              <Datepicker
-                                value={value}
-                                onChange={(val) =>
-                                  val && onChange(val)
-                                }
-                                minDate={new Date()}
-                              />
-                            )}
-                            rules={{ required: true }}
-                          />
-                          {errors.dateRange && (
-                            <span className="text-red-600">
-                              This field is required
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="sm:col-span-2">
-                        <label
-                          htmlFor="guest_list"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Travellers
-                        </label>
-                        <div className="mt-2">
-                          <input
-                            {...register('traveller')}
-                            min={1}
-                            defaultValue={1}
-                            id="guest_list"
-                            autoComplete="guest_list"
-                            className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          />
-                          {errors.traveller && (
-                            <span className="text-red-600">
-                              This field is required
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <div className="mt-8 flex items-center justify-start gap-x-6">
-                          <button
-                            type="submit"
-                            className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      <div className="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-12">
+                        <div className="sm:col-span-5 sm:col-start-1">
+                          <label
+                            htmlFor="city"
+                            className="block text-sm font-medium leading-6 text-gray-900"
                           >
-                            Search
-                          </button>
+                            Going to
+                          </label>
+                          <div className="mt-2">
+                            <Controller
+                              name="province"
+                              control={control}
+                              render={({
+                                field: { onChange, value },
+                              }) => (
+                                <Select
+                                  options={optionProvince}
+                                  placeholder="Where ?"
+                                  onChange={(val) =>
+                                    val && onChange(val.value)
+                                  }
+                                />
+                              )}
+                              rules={{ required: true }}
+                            />
+                            {errors.province && (
+                              <span className="text-red-600">
+                                This field is required
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="sm:col-span-4">
+                          <label
+                            htmlFor="region"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Date
+                          </label>
+                          <div className="mt-1 border rounded-md">
+                            <Controller
+                              name="dateRange"
+                              control={control}
+                              render={({
+                                field: { onChange, value },
+                              }) => (
+                                <Datepicker
+                                  value={value}
+                                  onChange={(val) =>
+                                    val && onChange(val)
+                                  }
+                                  minDate={new Date()}
+                                />
+                              )}
+                              rules={{ required: true }}
+                            />
+                            {errors.dateRange && (
+                              <span className="text-red-600">
+                                This field is required
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label
+                            htmlFor="guest_list"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Travellers
+                          </label>
+                          <div className="mt-2">
+                            <input
+                              {...register('traveller')}
+                              min={1}
+                              defaultValue={1}
+                              id="guest_list"
+                              autoComplete="guest_list"
+                              className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                            {errors.traveller && (
+                              <span className="text-red-600">
+                                This field is required
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="sm:col-span-1">
+                          <div className="mt-8 flex items-center justify-start gap-x-6">
+                            <button
+                              type="submit"
+                              className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                              Search
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
+          ) : (
+            <React.Fragment />
+          )}
           <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
             <svg
               className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"

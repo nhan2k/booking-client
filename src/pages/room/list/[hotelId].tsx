@@ -35,7 +35,10 @@ function Page({}: Props) {
           <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <div className="flex justify-between">
               <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-                Customers also purchased
+                Rooms List Of{' '}
+                <span className="text-blue-500">
+                  {query?.data?.hotel?.hotel_name}
+                </span>
               </h2>
               <button
                 onClick={handleBtnPostClick}
@@ -48,7 +51,7 @@ function Page({}: Props) {
 
             {query.isSuccess ? (
               <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-1 lg:grid-cols-2 xl:gap-x-8 cursor-pointer">
-                {query?.data?.map((room: any) => (
+                {query?.data?.rooms?.[0]?.map((room: any) => (
                   <div
                     key={room?.room_id}
                     className="group"

@@ -16,6 +16,7 @@ function Page({}: Props) {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [error, setError] = React.useState<string>();
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const isAuth = async () => {
@@ -33,6 +34,7 @@ function Page({}: Props) {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
     const response = await signIn('credentials', {
       email: data.email,
       password: data.password,
@@ -41,6 +43,7 @@ function Page({}: Props) {
     if (!response?.ok) {
       setError('Credential invalid!');
     }
+    setLoading(false);
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -125,7 +128,7 @@ function Page({}: Props) {
                   Forgot password?
                 </a>
               </div>
-              {status === 'loading' ? (
+              {loading ? (
                 <SpinnerBasic />
               ) : (
                 <button

@@ -12,26 +12,27 @@ type Props = {
   session: any;
   status: any;
 };
-const navigation = [
-  { name: 'Hotels List', href: '/hotel/list', role: 'hotelier' },
-  {
-    name: 'Rooms List',
-    href: `/room/list?pageSize=10&pageNumber=1`,
-    isPublic: true,
-    role: 'user',
-  },
-  {
-    name: 'For Hotelier',
-    href: '/register?role=hotelier',
-    isPublic: true,
-  },
-  {
-    name: 'Reservation',
-    href: '/reservation',
-    role: 'user',
-  },
-];
+
 function Navbar({ session, status }: Props) {
+  const navigation = [
+    { name: 'Hotels List', href: '/hotel/list', role: 'hotelier' },
+    {
+      name: 'Rooms List',
+      href: `/room/list?pageSize=10&pageNumber=1`,
+      isPublic: true,
+      role: 'user',
+    },
+    {
+      name: 'For Hotelier',
+      href: '/register?role=hotelier',
+      isPublic: true,
+    },
+    {
+      name: 'Reservation',
+      href: '/reservation',
+      role: 'user',
+    },
+  ];
   const { push } = useRouter();
   const [role, setRole] = React.useState<string | null>('');
 
