@@ -17,7 +17,7 @@ type Inputs = {
   wifi: boolean;
   AC: boolean;
   heater: boolean;
-  otherFacilities: string;
+  other_facilities: string;
   file: FileList;
 };
 type Props = {};
@@ -287,16 +287,16 @@ function Page({}: Props) {
 
                         <div className="col-span-full mt-2">
                           <label
-                            htmlFor="otherFacilities"
+                            htmlFor="other_facilities"
                             className="block text-sm font-medium leading-6 text-gray-900"
                           >
                             Other Facilities
                           </label>
                           <div className="my-3">
                             <textarea
-                              {...register('otherFacilities')}
-                              id="otherFacilities"
-                              name="otherFacilities"
+                              {...register('other_facilities')}
+                              id="other_facilities"
+                              name="other_facilities"
                               className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                               defaultValue={''}
                             />
