@@ -23,9 +23,18 @@ export const reserve = async (data: TDataReserve) => {
   }
 };
 
-export const getReservation = async () => {
+export const getReservation = async (query: {
+  pageSize?: number;
+  pageNumber?: number;
+}) => {
   try {
-    const response = await axiosInterceptor.get('/reservation');
+    const params = new URLSearchParams([
+      ['pageSize', query?.pageSize?.toString() ?? '1'],
+      ['pageNumber', query?.pageNumber?.toString() ?? '10'],
+    ]);
+    const response = await axiosInterceptor.get('/reservation', {
+      params,
+    });
 
     return response.data;
   } catch (error) {

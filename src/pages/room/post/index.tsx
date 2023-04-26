@@ -91,30 +91,6 @@ function Page({}: Props) {
                       Select an Hotel
                     </label>
                     <div className="my-3 w-full">
-                      {/* <Controller
-                        name="hotel_id"
-                        control={control}
-                        rules={{ required: true }}
-                        defaultValue={options[0]?.value}
-                        render={({ field }) => (
-                          <select
-                            {...field}
-                            id="countries"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          >
-                            <option>Choose Hotel</option>
-                            {options.map((e, i) => (
-                              <option
-                                value={e.value}
-                                key={i}
-                                className="w-full"
-                              >
-                                {e.label}
-                              </option>
-                            ))}
-                          </select>
-                        )}
-                      /> */}
                       <Controller
                         name="hotel_id"
                         control={control}
@@ -296,7 +272,6 @@ function Page({}: Props) {
                             <textarea
                               {...register('other_facilities')}
                               id="other_facilities"
-                              name="other_facilities"
                               className="pl-4 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                               defaultValue={''}
                             />
@@ -309,7 +284,7 @@ function Page({}: Props) {
                           </h1>
                           <input
                             type="file"
-                            required={true}
+                            required
                             {...register('file', {
                               validate: {
                                 accept: (value) =>

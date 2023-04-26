@@ -2,7 +2,7 @@ import { axiosInterceptor } from '@/config/axios';
 
 export const getProfile = async () => {
   try {
-    const response = await axiosInterceptor.post('/auth/profile');
+    const response = await axiosInterceptor.get('/auth/profile');
 
     return response.data;
   } catch (error: any) {

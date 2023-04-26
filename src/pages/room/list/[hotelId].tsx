@@ -76,7 +76,7 @@ function Page({}: Props) {
                             </span>
                           </p>
                         </h3>
-                        <p className="mt-1 text-sm text-gray-500">
+                        <p className="mt-1 text-sm text-gray-500 min-w-[calc(1rem)]">
                           {!isNaN(room?.prize) &&
                             Number(room?.prize).toLocaleString(
                               'en-US',

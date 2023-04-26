@@ -186,14 +186,19 @@ function Page() {
                           >
                             Travellers
                           </label>
-                          <div className="mt-2">
+                          <div className="mt-1">
                             <input
-                              {...register('traveller')}
+                              {...register('traveller', {
+                                required: true,
+                                min: 1,
+                                max: 10,
+                              })}
+                              type="number"
                               min={1}
                               defaultValue={1}
                               id="guest_list"
                               autoComplete="guest_list"
-                              className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block w-full rounded-md border-0 py-2 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                             {errors.traveller && (
                               <span className="text-red-600">

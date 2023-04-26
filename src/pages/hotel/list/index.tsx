@@ -3,7 +3,6 @@ import Layout from '@/components/layout';
 import withAuthentication from '@/lib/withAuthentication';
 import { withRoleHotelier } from '@/lib/withAuthorization';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 

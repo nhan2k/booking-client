@@ -38,8 +38,8 @@ axiosInterceptor.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const rs = await axios.post(
-            `${process.env.ENDPOINT}/auth/refresh`,
+          const rs = await axios.get(
+            `${process.env.NEXT_PUBLIC_ENDPOINT}/auth/refresh`,
             {
               headers: {
                 Authorization:
@@ -61,10 +61,9 @@ axiosInterceptor.interceptors.response.use(
             id: 'sessionTimeOut',
           });
           // Logging out the user by removing all the tokens from local
-          sessionStorage.removeItem('access-token');
-          sessionStorage.removeItem('refresh-token');
+          sessionStorage.clear();
           // Redirecting the user to the landing page
-          window.location.href = window.location.origin;
+          window.location.href = window.location.origin || '/login';
           return Promise.reject(_error);
         }
       }

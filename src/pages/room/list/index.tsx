@@ -1,10 +1,8 @@
 import { getRooms } from '@/api/room';
 import Layout from '@/components/layout';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Fragment, useState } from 'react';
 import {
   Dialog,
   Disclosure,
@@ -19,7 +17,6 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from '@heroicons/react/20/solid';
-import Hotel from '@/assets/images/hotel.jpg';
 import Pagination from '@/components/pagination';
 
 const sortOptions = [
@@ -81,7 +78,7 @@ const Page = (props: Props) => {
               onClose={setMobileFiltersOpen}
             >
               <Transition.Child
-                as={Fragment}
+                as={React.Fragment}
                 enter="transition-opacity ease-linear duration-300"
                 enterFrom="opacity-0"
                 enterTo="opacity-100"
@@ -94,7 +91,7 @@ const Page = (props: Props) => {
 
               <div className="fixed inset-0 z-40 flex">
                 <Transition.Child
-                  as={Fragment}
+                  as={React.Fragment}
                   enter="transition ease-in-out duration-300 transform"
                   enterFrom="translate-x-full"
                   enterTo="translate-x-0"
@@ -214,7 +211,10 @@ const Page = (props: Props) => {
               </h1>
 
               <div className="flex items-center">
-                <Menu as="div" className="inline-block text-left">
+                <Menu
+                  as="div"
+                  className="relative inline-block text-left"
+                >
                   <div>
                     <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                       Sort
@@ -226,7 +226,7 @@ const Page = (props: Props) => {
                   </div>
 
                   <Transition
-                    as={Fragment}
+                    as={React.Fragment}
                     enter="transition ease-out duration-100"
                     enterFrom="transform opacity-0 scale-95"
                     enterTo="transform opacity-100 scale-100"
@@ -234,7 +234,7 @@ const Page = (props: Props) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         {sortOptions.map((option) => (
                           <Menu.Item key={option.name}>
@@ -392,29 +392,31 @@ const Page = (props: Props) => {
                               <div className="mt-4 flex justify-between">
                                 <div>
                                   <h3 className="text-sm text-gray-700">
-                                    <p>
-                                      <span
-                                        aria-hidden="true"
-                                        className="inset-0"
-                                      />
-                                      capacity {room?.capacity}
+                                    <p className="inset-0 text-sm font-medium text-gray-900">
+                                      Capacity{' '}
+                                      <span>{room?.capacity}</span>
                                     </p>
                                   </h3>
-                                  <p className="mt-1 text-sm text-gray-500">
-                                    Facilities {room?.facilities}
+                                </div>
+                                <div className="min-w-[calc(5rem)]">
+                                  <p>
+                                    Prize{' '}
+                                    {!isNaN(room?.prize) && (
+                                      <span className="text-sm font-medium text-gray-900">
+                                        {Number(
+                                          room?.prize
+                                        ).toLocaleString('en-US', {
+                                          style: 'currency',
+                                          currency: 'USD',
+                                        })}
+                                      </span>
+                                    )}
                                   </p>
                                 </div>
-                                <p className="text-sm font-medium text-gray-900">
-                                  Prize{' '}
-                                  {!isNaN(room?.prize) &&
-                                    Number(
-                                      room?.prize
-                                    ).toLocaleString('en-US', {
-                                      style: 'currency',
-                                      currency: 'USD',
-                                    })}
-                                </p>
                               </div>
+                              <p className="mt-1 text-sm text-gray-500 truncate">
+                                Facilities {room?.facilities}
+                              </p>
                             </div>
                           ))}
                         </div>

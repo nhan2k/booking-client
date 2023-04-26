@@ -42,7 +42,7 @@ export const postRooms = async (data: any) => {
     formData.append('facilities', data.facilities);
     formData.append('heater', data.heater);
     formData.append('hotel_id', data.hotel_id);
-    formData.append('otherFacilities', data.otherFacilities);
+    formData.append('other_facilities', data.other_facilities);
     formData.append('prize', data.prize);
     formData.append('wifi', data.wifi);
 
